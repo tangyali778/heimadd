@@ -1,0 +1,17 @@
+const KEY = 'tangyali'
+
+const setToken = (token) => {
+    localStorage.setItem(KEY, token)
+}
+const getToken = () => {
+    return localStorage.getItem(KEY)
+}
+const removeToken = () => {
+    localStorage.removeItem(KEY)
+}
+//按需导出
+export {
+    setToken,
+    getToken,
+    removeToken
+}
