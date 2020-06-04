@@ -79,6 +79,9 @@ export default {
       if (res.data.code == 200) {
         this.avatarSrc =  process.env.VUE_APP_BASEURL + "/" + res.data.data.avatar;
         this.username = res.data.data.username;
+
+        //得到登录者信息之后存到vuex仓库
+        this.$store.commit('setInfo',res.data.data)
       }
     },
     //退出
