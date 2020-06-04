@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 //按需导入token
-import {getToken,removeToken} from 'utils/token.js'
+import {getToken,removeToken} from '@/utils/token.js'
 import router from '../router';
 
 // axios的基本路径
@@ -16,7 +16,7 @@ axios.interceptors.request.use(function (config) {
     // 发送请求就把token带过去
     const token = getToken()
     if (token) {
-        config.header.token = token;
+        config.headers.token = token;
     }
 
     return config;
@@ -32,10 +32,11 @@ axios.interceptors.response.use(function (response) {
      if (response.data.code == 206) {
          removeToken();
          router.push('/login')
-         return
+         
      }
     return response;
   }, function (error) {
     // Do something with response error
     return Promise.reject(error);
-  });
+});
+  

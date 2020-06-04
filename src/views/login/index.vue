@@ -126,7 +126,7 @@ export default {
           setToken(res.data.data.token);
 
           //跳转到layout页面
-          this.$router.push("/layout");
+          this.$router.push("/layout/welcome");
         } else {
           this.$message.error(res.data.message);
           //登录错了就重新更新验证码
