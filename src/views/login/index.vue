@@ -44,24 +44,29 @@
       </el-form>
     </div>
     <div class="right">
-        <img src="../../assets/login_bg.png" alt="">
+      <img src="../../assets/login_bg.png" alt />
     </div>
+    <register ref="registerRef"></register>
   </div>
 </template>
 
 <script>
+import register from "./register";
 //按需导入
-import {setToken} from '@/utils/token.js'
+import { setToken } from "@/utils/token.js";
 export default {
   name: "Login",
+  components: {
+    register
+  },
   data() {
     return {
       codeUrl: process.env.VUE_APP_BASEURL + "/captcha?type=login",
       loginForm: {
-        phone: "18511111111",//手机号
-        password: "12345678",//密码
-        code: "",//验证码
-        checked: true,//是否勾选用户协议
+        phone: "18511111111", //手机号
+        password: "12345678", //密码
+        code: "", //验证码
+        checked: true //是否勾选用户协议
       },
       rules: {
         phone: [
@@ -118,23 +123,31 @@ export default {
             type: "success"
           });
           // 登录成功后保存token到localstorage里面去
-          setToken(res.data.data.token)
+          setToken(res.data.data.token);
 
           //跳转到layout页面
-          this.$router.push('/layout')
+          this.$router.push("/layout");
         } else {
           this.$message.error(res.data.message);
           //登录错了就重新更新验证码
-          this.captchaClick()
+          this.captchaClick();
         }
       });
     },
     //点击验证码图片按钮重新发送请求
-    captchaClick(){
-      this.codeUrl = process.env.VUE_APP_BASEURL + "/captcha?type=login&r="+Math.random()
+    captchaClick() {
+      this.codeUrl =
+        process.env.VUE_APP_BASEURL + "/captcha?type=login&r=" + Math.random();
     },
-      //点击注册按钮
-    registerClick() {},
+    //点击注册按钮
+    registerClick() {
+      this.$refs.registerRef.dialogVisible = true;
+      // 等dom渲染完才能清空form表单内容
+      this.$nextTick(() => {
+        this.$refs.registerRef.$refs.registerFormRef.resetFields();
+      });
+      this.$refs.registerRef.imageUrl=""
+    }
   }
 };
 </script>
