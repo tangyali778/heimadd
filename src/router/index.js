@@ -16,6 +16,13 @@ import {
 } from '@/utils/token.js'
 //注册路由
 Vue.use(VueRouter)
+
+// 解决 相同路由相同参数跳转 请求组件,浏览器觉得是同一个没必要重新请求报错(百度找)
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
 //实例化
 const router = new VueRouter({
     routes: [{
