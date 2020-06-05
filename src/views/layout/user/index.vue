@@ -2,15 +2,15 @@
   <div>
     <el-card>
       <!-- 搜索栏 -->
-      <el-form :model="userForm" ref="userFormRef" inline label-width="80px">
+      <el-form :model="searchForm" ref="searchFormRef" inline label-width="80px">
         <el-form-item label="用户名称" prop="username">
-          <el-input v-model="userForm.username"></el-input>
+          <el-input v-model="searchForm.username"></el-input>
         </el-form-item>
         <el-form-item label="用户邮箱" prop="email">
-          <el-input v-model="userForm.email"></el-input>
+          <el-input v-model="searchForm.email"></el-input>
         </el-form-item>
         <el-form-item label="角色" prop="role_id">
-          <el-select v-model="userForm.role_id" placeholder="请选择角色">
+          <el-select v-model="searchForm.role_id" placeholder="请选择角色">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -44,12 +44,12 @@
         </el-table-column>
         <el-table-column label="操作" width="280px">
           <template slot-scope="scope">
-            <el-button type="primary">编辑</el-button>
+            <el-button type="primary" @click="edit(scope.row)">编辑</el-button>
             <el-button
               @click="changeStatus('/user/status',scope.row.id)"
               :type="scope.row.status===0?'success':'info'"
             >{{scope.row.status === 0 ? '启用':'禁用'}}</el-button>
-            <el-button type="danger"  @click="del('/user/remove',scope.row.id)">删除</el-button>
+            <el-button type="danger" @click="del('/user/remove',scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -65,17 +65,22 @@
         background
       ></el-pagination>
     </el-card>
+    <user-edit ref="EditRef"></user-edit>
   </div>
 </template>
 
 <script>
+import userEdit from "./user-add-or-update";
 import common from "@/mixins/common";
 export default {
   mixins: [common],
+  components: {
+    userEdit
+  },
   name: "User",
   data() {
     return {
-      userForm: {
+      searchForm: {
         username: "",
         email: "",
         role_id: ""
@@ -113,7 +118,7 @@ export default {
     async getListData() {
       const res = await this.$axios.get("/user/list", {
         params: {
-          ...this.userForm,
+          ...this.searchForm,
           page: this.page,
           limit: this.limit
         }
@@ -133,7 +138,8 @@ export default {
     //清除
     clear() {
       // form表单中resetFields()方法必须搭配prop使用
-      this.$refs.userFormRef.resetFields();
+      this.$refs.searchFormRef.resetFields();
+      this.search();
     },
     //页容量改变
     sizeChange(val) {
@@ -146,12 +152,31 @@ export default {
       this.getListData();
     },
     //新增用户
-    add() {}
+    add() {
+      this.$refs.EditRef.modal = "add";
+      this.$refs.EditRef.dialogVisible = true;
+      //去掉bug如果在新增前面点过编辑再点新增form表单内就会有内容
+      // form表单要在每次不管点新增还是编辑的时候都要清空内容还有校验
+      this.$refs.EditRef.userEditForm = {
+        username: "", //用户名
+        email: "", //邮箱
+        phone: "",
+        role_id: "", //角色
+        status: "", //状态
+        remark: "" //备注
+      };
+    },
+    //编辑用户
+    edit(row) {
+      this.$refs.EditRef.modal = "edit";
+      this.$refs.EditRef.dialogVisible = true;
+      this.$refs.EditRef.userEditForm = JSON.parse(JSON.stringify(row));
+    }
   }
 };
 </script>
 
-<style lang='less'>
+<style lang='less' scoped>
 .el-form-item {
   .el-input {
     width: 240px;
