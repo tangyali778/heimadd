@@ -48,6 +48,9 @@ export default {
   created() {
     //发送请求得到上面数据
     this.getTitleData();
+    
+  },
+  mounted() {
     // 发送请求得到下面企业题目数据统计
     this.getStatisticsData();
   },
