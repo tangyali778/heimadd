@@ -25,9 +25,13 @@ VueRouter.prototype.push = function push(location) {
 
 //实例化
 const router = new VueRouter({
-    routes: [{
+    routes: [
+        {
             path: '/login',
-            component: Login
+            component: Login,
+            meta: {
+                title: '登录'
+            }
         },
         {
             path: '/layout',
@@ -49,7 +53,7 @@ const router = new VueRouter({
                     meta: {
                         roles: ['超级管理员', '管理员', '老师'],
                         icon: 'el-icon-pie-chart',
-                        fullPath: '/layout/chart',
+                        fullPath: '/layout/echart',
                         title: '数据预览'
                     },
                 },
@@ -121,4 +125,14 @@ router.beforeEach((to, from, next) => {
 
 
 })
+
+// 全局后置钩子
+router.afterEach((to) => {
+    // console.log(to);
+    // 当进入那个页面之后就把那个页面的标题改一下
+    document.title = to.meta.title || 'tyl'
+  
+
+})
+
 export default router
