@@ -2,14 +2,24 @@ import Vue from 'vue'
 //导入路由
 import VueRouter from 'vue-router'
 //导入组件
-import Login from '@/views/login'
-import Layout from '@/views/layout'
-import Welcome from '@/views/layout/welcome'
-import Echart from '@/views/layout/echart'
-import User from '@/views/layout/user'
-import Question from '@/views/layout/question'
-import Enterprise from '@/views/layout/enterprise'
-import Subject from '@/views/layout/subject'
+// import Login from '@/views/login'
+// import Layout from '@/views/layout'
+// import Welcome from '@/views/layout/welcome'
+// import Echart from '@/views/layout/echart'
+// import User from '@/views/layout/user'
+// import Question from '@/views/layout/question'
+// import Enterprise from '@/views/layout/enterprise'
+// import Subject from '@/views/layout/subject'
+
+//路由懒加载 到时候webpack打包的时候是在一个一个js里面的
+const Login = () => import('@/views/login')
+const Layout = () => import('@/views/layout')
+const Welcome = () => import('@/views/layout/welcome')
+const Chart = () => import('@/views/layout/chart')
+const User = () => import('@/views/layout/user')
+const Enterprise = () => import('@/views/layout/enterprise')
+const Question = () => import('@/views/layout/question')
+const Subject = () => import('@/views/layout/subject')
 //按需导入token
 import {
     getToken
