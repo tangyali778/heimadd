@@ -20,7 +20,7 @@ Vue.use(VueRouter)
 // 解决 相同路由相同参数跳转 请求组件,浏览器觉得是同一个没必要重新请求报错(百度找)
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
-  return originalPush.call(this, location).catch(err => err)
+    return originalPush.call(this, location).catch(err => err)
 }
 
 //实例化
@@ -32,30 +32,69 @@ const router = new VueRouter({
         {
             path: '/layout',
             component: Layout,
-            children: [
-                {
+            children: [{
                     path: 'welcome',
-                    component: Welcome
+                    component: Welcome,
+                    //借助路由元信息,对这条路径做个具体的描述
+                    meta: {
+                        roles: ['超级管理员', '管理员', '老师', '学生'],
+                        icon: 'el-icon-date',
+                        fullPath: '/layout/welcome',
+                        title: '个人信息'
+                    },
                 },
                 {
                     path: 'echart',
-                    component: Echart
+                    component: Echart,
+                    meta: {
+                        roles: ['超级管理员', '管理员', '老师'],
+                        icon: 'el-icon-pie-chart',
+                        fullPath: '/layout/chart',
+                        title: '数据预览'
+                    },
                 },
                 {
                     path: 'user',
-                    component: User
+                    component: User,
+                    meta: {
+                        roles: ['超级管理员', '管理员', '老师'],
+                        icon: 'el-icon-user',
+                        fullPath: '/layout/user',
+                        title: '用户列表'
+                    },
+
                 },
                 {
                     path: 'question',
-                    component: Question
+                    component: Question,
+                    meta: {
+                        roles: ['超级管理员', '管理员', '老师', '学生'],
+                        icon: 'el-icon-edit-outline',
+                        fullPath: '/layout/question',
+                        title: '题库列表'
+                    },
+
                 },
                 {
                     path: 'enterprise',
-                    component: Enterprise
+                    component: Enterprise,
+                    meta: {
+                        roles: ['超级管理员', '管理员', '老师'],
+                        icon: 'el-icon-office-building',
+                        fullPath: '/layout/enterprise',
+                        title: '企业列表'
+                    },
                 },
                 {
                     path: 'subject',
-                    component: Subject
+                    component: Subject,
+                    meta: {
+                        roles: ['超级管理员', '管理员', '老师'],
+                        icon: 'el-icon-notebook-2',
+                        fullPath: '/layout/subject',
+                        title: '学科列表'
+
+                    },
                 },
             ]
         },

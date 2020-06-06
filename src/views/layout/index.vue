@@ -21,7 +21,17 @@
           :collapse="isCollapse"
           class="el-menu-vertical-demo"
         >
-          <el-menu-item index="/layout/welcome">
+        <!--权限控制 -->
+          <el-menu-item
+            v-for="(item, index) in $router.options.routes[1].children"
+            :key="index"
+            :index="item.meta.fullPath"
+            v-show="item.meta.roles.includes($store.getters.getInfo.role)"
+          >
+            <i :class="item.meta.icon"></i>
+            <span slot="title">{{item.meta.title}}</span>
+          </el-menu-item>
+          <!-- <el-menu-item index="/layout/welcome">
             <i class="el-icon-date"></i>
             <span slot="title">个人信息</span>
           </el-menu-item>
@@ -44,7 +54,7 @@
           <el-menu-item index="/layout/subject">
             <i class="el-icon-notebook-2"></i>
             <span slot="title">学科列表</span>
-          </el-menu-item>
+          </el-menu-item>-->
         </el-menu>
       </el-aside>
       <el-main style="background:#e8e9ec">
@@ -77,11 +87,12 @@ export default {
       const res = await this.$axios.get("/info");
       //console.log(res);
       if (res.data.code == 200) {
-        this.avatarSrc =  process.env.VUE_APP_BASEURL + "/" + res.data.data.avatar;
+        this.avatarSrc =
+          process.env.VUE_APP_BASEURL + "/" + res.data.data.avatar;
         this.username = res.data.data.username;
 
         //得到登录者信息之后存到vuex仓库
-        this.$store.commit('setInfo',res.data.data)
+        this.$store.commit("setInfo", res.data.data);
       }
     },
     //退出
@@ -94,7 +105,7 @@ export default {
         .then(async () => {
           const res = await this.$axios.get("/logout");
           if (res.data.code == 200) {
-           //把token删掉
+            //把token删掉
             removeToken();
 
             //退出成功后就要去到登录页
