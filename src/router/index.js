@@ -15,7 +15,7 @@ import VueRouter from 'vue-router'
 const Login = () => import('@/views/login')
 const Layout = () => import('@/views/layout')
 const Welcome = () => import('@/views/layout/welcome')
-const Chart = () => import('@/views/layout/chart')
+const Echart = () => import('@/views/layout/echart')
 const User = () => import('@/views/layout/user')
 const Enterprise = () => import('@/views/layout/enterprise')
 const Question = () => import('@/views/layout/question')
